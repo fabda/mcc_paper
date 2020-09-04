@@ -140,5 +140,5 @@ if __name__ == "__main__":
     drift   = get_drift(X,Y)
 
     # We use the same drift to refocus both Red and Green channel
-    A       = refocus_one_channel(R, drift, "00A.tif")
-    B       = refocus_one_channel(G, drift, "00B.tif")
+    refocus_one_channel(R, drift, "00A.tif")
+    refocus_one_channel(G, drift, "00B.tif")
