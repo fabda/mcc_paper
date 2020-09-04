@@ -41,6 +41,8 @@ shell command to start refocus.py
 $ python refocus.py --stack_name=path_to_the_stack --tracking_file=path_to_the_tracking_file
 ```
 
+Plugin Fiji "Image Stabilizer": https://imagej.net/Image_Stabilizer
+
 
 Supplemental Video: https://amubox.univ-amu.fr/s/WxWYmd3f62xw9Bd
 
