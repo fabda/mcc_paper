@@ -22,4 +22,4 @@ TODO
 
 ## 4 - License
 
-This code repository is under [GPL v3.0 License]!(./LICENSE)
+This code repository is under [GPL v3.0 License](https://github.com/fabda/mcc_paper/blob/master/LICENSE)
