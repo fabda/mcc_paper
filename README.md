@@ -18,6 +18,30 @@ Prepare requirements.txt
 
 TODO
 
+refocus.py
+
+```shell
+$ python refocus.py -h
+usage: refocus.py [-h] [--stack_name stack_name]
+                  [--tracking_file tracking_file]
+
+Refocus an ImageJ TIFF hyperstack
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --stack_name stack_name
+                        path to the TIFF hyperstack
+  --tracking_file tracking_file
+                        path to the CSV file containing the tracking
+```
+
+shell command to start refocus.py
+
+```shell
+$ python refocus.py --stack_name=path_to_the_stack --tracking_file=path_to_the_tracking_file
+```
+
+
 Show supplemental Video (or Gif)
 
 
