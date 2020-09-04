@@ -42,7 +42,7 @@ $ python refocus.py --stack_name=path_to_the_stack --tracking_file=path_to_the_t
 ```
 
 
-Show supplemental Video (or Gif)
+Supplemental Video: https://amubox.univ-amu.fr/s/WxWYmd3f62xw9Bd
 
 
 
