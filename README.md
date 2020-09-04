@@ -12,6 +12,8 @@ doi: no doi yet
 
 TODO
 
+Prepare requirements.txt
+
 ## 2 - Video Refocusing and Stabilization
 
 TODO
