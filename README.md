@@ -38,7 +38,7 @@ optional arguments:
 shell command to start refocus.py
 
 ```shell
-$ python refocus.py --stack_name=path_to_the_stack --tracking_file=path_to_the_tracking_file
+$ python refocus.py --stack_name=path_to_the_stack.tif --tracking_file=path_to_the_tracking_file.csv
 ```
 
 Plugin Fiji "Image Stabilizer": https://imagej.net/Image_Stabilizer
