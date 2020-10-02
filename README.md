@@ -1,12 +1,12 @@
 # Code Repository
 
-## Paper with no name yet
+## The SCF/KIT pathway implements self-organised epithelial patterning by cell movement.
 
-### Author list
+### Alexandre Chuyen, Charlotte Rulquin, Virginie Thomé, Raphaël Clément, Fabrice Daian, Laurent Kodjabachian and Andrea Pasini
 
-Preprint : no preprint yet
+Preprint : https://www.biorxiv.org/content/10.1101/2020.04.22.055483v1
 
-doi: no doi yet
+doi: https://doi.org/10.1101/2020.04.22.055483
 
 ## 1 - Setup
 
