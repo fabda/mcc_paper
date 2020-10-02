@@ -16,7 +16,7 @@ Prepare requirements.txt
 
 ## 2 - Video Refocusing and Stabilization
 
-TODO
+In order to overcome the loss of focus events, artefactual movements and tissue deformation which made the detailed analysis of cell migration and their path tracking impossible, a semi automatic video refocus and stabilization procedure was used.
 
 refocus.py
 
