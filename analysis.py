@@ -75,7 +75,7 @@ def get_cumulative_distances(X,Y):
 
 def get_orientation_toward_origin(X,Y):
     """
-        Calculate the cumulative distance between two consecutive positions given by X and Y
+        Calculate the orientation of the vector from centroid to origin
         Arguments:
             - X       : X coordinates of the object
             - Y       : Y coordinates of the object
@@ -92,7 +92,7 @@ def get_orientation_toward_origin(X,Y):
 
 def get_direction(X,Y,window=1):
     """
-        Calculate the cumulative distance between two consecutive positions given by X and Y
+        Calculate the direction between two consecutive positions given by X and Y
         Arguments:
             - X           : X coordinates of the object
             - Y           : Y coordinates of the object
@@ -104,9 +104,14 @@ def get_direction(X,Y,window=1):
     directions=[]
     for i in range(window,X.shape[0]):
         direction = (180*math.atan2(Y[i]-Y[i-window],X[i]-X[i-window]))/np.pi
+
         directions.append(direction)
     directions = np.array(directions)
     return directions
+
+def calculate_object_X_Y(object_id,df):
+    slices,X,Y = get_object_X_Y(object_id,df)
+    return slices,X,Y
 
 
 def calculate_object_instant_velocity(object_id,df,sigmaG=10):
@@ -232,6 +237,22 @@ def calculate_object_direction(object_id,df,sigmaG=10,window=1):
     return slices,angles_corrected
 
 
+def generate_X_Y_result(df):
+    df_result = pd.DataFrame()
+
+    for object_id in np.unique(np.array(df["Track"])):
+        slices,X,Y = calculate_object_X_Y(object_id,df)
+
+
+        obj = (np.zeros_like(slices)+object_id).astype('int')
+        df0 = pd.DataFrame()
+        df0["Cell"]=obj
+        df0["Frames"]=slices
+        df0["X"]=X
+        df0["Y"]=Y
+
+        df_result = pd.concat([df_result,df0])
+    return df_result
 
 
 def generate_instant_velocity_result(df,sigmaG=10):
@@ -357,6 +378,48 @@ def generate_direction_result(df,sigmaG=10,window=1):
 
     return df_result
 
+def generate_direction_NSEW_result(df,sigmaG=10,window=1):
+        df_result = pd.DataFrame()
+        for object_id in np.unique(np.array(df["Track"])):
+            slices,directions = calculate_object_direction(object_id,df,sigmaG=sigmaG,window=window)
+
+            D=[]
+            for a in directions:
+                if -22.5<a<22.5:
+                    D.append("N")
+                    continue
+                if 22.5<a<67.5:
+                    D.append("NE")
+                    continue
+                if 67.5<a<112.5:
+                    D.append("E")
+                if 112.5<a<157.5:
+                    D.append("SE")
+                if a<-157.5 or a>157.5:
+                    D.append("S")
+                    continue
+                if -157.5<a<-112.5:
+                    D.append("SW")
+                    continue
+                if -112.5<a<-67.5:
+                    D.append("W")
+                    continue
+                if -67.5<a<-22.5:
+                    D.append("NW")
+                    continue
+            directions_NSEW=np.array(D)
+
+
+            obj = (np.zeros_like(slices)+object_id).astype('int')
+            df0 = pd.DataFrame()
+            df0["Cell"]=obj
+            df0["Frames"]=slices
+            df0["Direction_Cardinals"]=directions_NSEW
+
+            df_result = pd.concat([df_result,df0])
+
+        return df_result
+
 
 
 def generate_result(features,filename = None):
@@ -377,7 +440,7 @@ def generate_result(features,filename = None):
             DF = pd.merge(DF, df0, on=["Cell","Frames"])
 
     if filename is not None:
-        pd.to_excel(filename)
+        DF.to_excel(filename)
         print(filename , " has been saved successfully !")
 
     return DF
@@ -387,11 +450,10 @@ def define_arguments():
     """
         ArgumentParser to retrieve and check the validity of the script arguments
         Returns:
-            - stack_name    : path to the TIFF stack
-            - tracking_file : path to the CSV file containing the tracking points
+
     """
 
-    my_parser = argparse.ArgumentParser(description='Refocus an ImageJ TIFF hyperstack')
+    my_parser = argparse.ArgumentParser(description='Generate a set of Behavioral Descriptors from a Fiji Tracking File')
 
     my_parser.add_argument('--tracking_file',
                            metavar='tracking_file',
@@ -447,27 +509,44 @@ if __name__ == "__main__":
                         --pixmicron=0.4
                         --framesec=60
                         --tracking_file="../Results from STABILIZED_MAX_20180517_40X_pa-Tub-LA-GFP__mRFP_st14-2 in µm per sec.csv"
-                        --result_file=result.csv
+                        --result_file="result.csv"
 
         """
 
         # Get arguments
         tracking_file, sigmaG, window, pixmicron, framesec, result_file = define_arguments()
 
-        df           = read_imagej_object_tracking(tracking_file,delimiter=",")
+        df           = read_imagej_object_tracking(tracking_file,delimiter="\t")
 
-        df_speed     = generate_instant_velocity_result(df,sigmaG=sigmaG)
-        df_dist      = generate_distance_result(df,sigmaG=sigmaG)
-        df_cumdist   = generate_cumulative_distance_result(df,sigmaG=sigmaG)
-        df_orient    = generate_orientation_toward_origin_result(df,sigmaG=sigmaG)
-        df_direction = generate_direction_result(df,sigmaG=sigmaG,window=window)
+        df_XY        = generate_X_Y_result(df) #Ajout
+        print(df_XY)
 
-        res          = generate_result([df_speed, df_dist, df_cumdist,df_orient,df_direction])
+        df_speed          = generate_instant_velocity_result(df,sigmaG=sigmaG)
+        df_dist           = generate_distance_result(df,sigmaG=sigmaG)
+        df_cumdist        = generate_cumulative_distance_result(df,sigmaG=sigmaG)
+        df_orient         = generate_orientation_toward_origin_result(df,sigmaG=sigmaG)
+        df_direction      = generate_direction_result(df,sigmaG=sigmaG,window=window)
+        df_direction_NSEW = generate_direction_NSEW_result(df,sigmaG=sigmaG,window=window)
 
-        print(res)
+        res               = generate_result([df_XY,df_speed, df_dist, df_cumdist,df_orient,df_direction,df_direction_NSEW],tracking_file+"_ANALYSIS.xls")
 
+        # Recalculate according to pixmicron and framesec and regenerate another file
+        df_speed["Instant_speed_µm_s"]=df_speed["Instant_speed"]*pixmicron/framesec
+        del df_speed["Instant_speed"]
 
+        df_dist["Distance_µm"]=df_dist["Distance"]*pixmicron
+        del df_dist["Distance"]
 
+        df_cumdist["Cumulative_distance_µm"]=df_cumdist["Cumulative_distance"]*pixmicron
+        del df_cumdist["Cumulative_distance"]
+
+        df_orient["Orientation_toward_origin_deg"]=df_orient["Orientation_toward_origin"]
+        del df_orient["Orientation_toward_origin"]
+
+        df_direction["Direction_deg"]=df_direction["Direction"]
+        del df_direction["Direction"]
+
+        res               = generate_result([df_XY,df_speed, df_dist, df_cumdist,df_orient,df_direction,df_direction_NSEW],tracking_file+"_ANALYSIS_1pixel="+str(pixmicron)+"micron_1frame="+str(framesec)+".xls")
 
 
 
