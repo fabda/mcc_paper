@@ -10,9 +10,13 @@ doi: no doi yet
 
 ## 1 - Setup
 
-TODO
+First, you need to setup a Python Anaconda environment (https://www.anaconda.com/products/individual) or miniconda (Python 3.5 or higher), and clone this repository on your computer.
 
-Prepare requirements.txt
+Then create a virtual environment and process to the python requirements install by typing into the cloned repository on your computer
+
+```shell
+pip install -r requirements.txt
+```
 
 ## 2 - Video Refocusing and Stabilization
 
