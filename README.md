@@ -18,8 +18,6 @@ Prepare requirements.txt
 
 In order to overcome the loss of focus events, artefactual movements and tissue deformation which made the detailed analysis of cell migration and their path tracking impossible, a semi automatic video refocus and stabilization procedure was used.
 
-refocus.py
-
 ```shell
 $ python refocus.py -h
 usage: refocus.py [-h] [--stack_name stack_name]
