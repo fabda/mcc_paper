@@ -48,7 +48,30 @@ Supplemental Video: https://amubox.univ-amu.fr/s/WxWYmd3f62xw9Bd
 
 ## 3 - Tracking and Analysis
 
-TODO
+For each refocused and stabilized video, MCCs centroids coordinates have been manually tracked using the "Manual Tracking" Fiji plugin and their position corrected using an one-dimensional  Gaussian filter (sigma=10). A set of "behavioral descriptors" are then calculated to help quantify individual cell movements and interactions throughout a whole movie using an homemade Python script
+
+```shell
+$ python analysis.py -h
+
+usage: analysis.py [-h] [--tracking_file tracking_file] [--sigma sigma]
+                   [--window window] [--pixmicron pixmicron]
+                   [--framesec framesec] [--result_file result_file]
+
+Generate a set of Behavioral Descriptors from a Fiji Tracking File
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --tracking_file tracking_file
+                        path to the tracking CSV file
+  --sigma sigma         sigma value for 1-d gaussian filter
+  --window window       window size for direction calculation
+  --pixmicron pixmicron
+                        1 pixel equals ? µm
+  --framesec framesec   1 frame equals ? s
+  --result_file result_file
+                        CSV result filename
+```
+
 
 ## 4 - License
 
