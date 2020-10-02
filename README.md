@@ -71,6 +71,12 @@ optional arguments:
   --result_file result_file
                         CSV result filename
 ```
+An example of shell command to start analysis.py using "trackingfile.csv" as input
+
+```shell
+$ python analysis.py --sigma=10 --window=5 --pixmicron=0.4 --framesec=60 --tracking_file="../trackfile.csv" --result_file="result.xls"
+
+```
 
 
 ## 4 - License
